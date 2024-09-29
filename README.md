@@ -1,50 +1,47 @@
-# React + TypeScript + Vite
+# @bentoo/state-man
+It is a lightweight package for state management in React applications, designed as a simplified alternative to Redux, Zustand and the Context API. It offers an intuitive approach to managing global and local states, allowing you to keep your application organized and easy to maintain.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+With an easy-to-use API, `@bentoo/state-man` is ideal for developers looking for an efficient solution for state management.
+## Installation
 
-Currently, two official plugins are available:
+You can install the package via NPM:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install @bentoo/state-man
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+or via Yarn:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+yarn add @bentoo/state-man
 ```
+
+or via pnpm:
+
+```bash
+pnpm add @bentoo/state-man
+```
+
+## Usage
+
+Here’s a basic example of how to use `@bentoo/state-man` in your project:
+
+### 1. create a store
+```tsx
+
+```
+
+
+## Contribution
+
+If you would like to contribute, feel free to open a pull request or report an issue.
+
+1. Fork the project.
+2. Create your feature branch (`git checkout -b my-new-feature`).
+3. Commit your changes (`git commit -m 'Adding new feature'`).
+4. Push to the branch (`git push origin my-new-feature`).
+5. Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
