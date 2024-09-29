@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
-import { Store } from "../types";
 import { Observable } from "./Observable";
+import { Store } from "../types";
 
 
 export function createStore<T>(data: T): Store<T> {
