@@ -1,5 +1,5 @@
 # @bentoo/state-man
-It is a lightweight package for state management in React applications, designed as a simplified alternative to Redux, Zustand and the Context API. It offers an intuitive approach to managing global and local states, allowing you to keep your application organized and easy to maintain.
+It is a lightweight package for state management in React applications, designed as a simplified alternative to Zustand and the Context API. It offers an intuitive approach to managing global and local states, allowing you to keep your application organized and easy to maintain.
 
 With an easy-to-use API, `@bentoo/state-man` is ideal for developers looking for an efficient solution for state management.
 ## Installation

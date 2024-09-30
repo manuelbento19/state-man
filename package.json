@@ -1,8 +1,8 @@
 {
   "name": "@bentoo/state-man",
-  "description": "A litte React package to state management",
+  "description": "A lightweight package for state management in React applications, designed as a simplified alternative to Zustand and the Context API.",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
