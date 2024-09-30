@@ -28,9 +28,53 @@ Here’s a basic example of how to use `@bentoo/state-man` in your project:
 
 ### 1. create a store
 ```tsx
+// ./stores/counter.ts
+import { create } from '@bentoo/state-man'
+
+export const useStore = create(0)
 
 ```
+### 2. use your store anywhere
+```tsx
+// counter.tsx
+export const Counter = () => {
+  const {state,setState} = useStore()
 
+  const increment = () => setState(state + 1);
+
+  return (
+    <button onClick={increment}>
+      Count is {state}
+    </button>
+  );
+}
+
+// App.tsx
+import Counter from './counter'
+import { useStore } from './stores/counter'
+
+function App() {
+  const {state} = useStore()
+
+  return (
+    <div className="card">
+      <h1>Now the counter is: {state}</h1>
+      <Counter/>
+    </div>
+  )
+}
+
+export default App
+```
+
+## Why @bentoo/state-man over Context API?
+- Only components that actually need to be updated are rendered
+- Avoid unnecessary re-renders
+- Offers a lighter configuration and less overhead, no context providers anymore
+
+## Why @bentoo/state-man over Zustand?
+- Offers a lighter configuration and less overhead
+- Simple and un-opinionated
 
 ## Contribution
 
