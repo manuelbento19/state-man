@@ -1,7 +1,12 @@
 # @bentoo/state-man
+
 It is a lightweight package for state management in React applications, designed as a simplified alternative to Zustand and the Context API. It offers an intuitive approach to managing global and local states, allowing you to keep your application organized and easy to maintain.
 
 With an easy-to-use API, `@bentoo/state-man` is ideal for developers looking for an efficient solution for state management.
+
+[![Version](https://img.shields.io/npm/v/@bentoo/state-man?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@bentoo/state-man)
+[![Downloads](https://img.shields.io/npm/dt/@bentoo/state-man.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@bentoo/state-man)
+
 ## Installation
 
 You can install the package via NPM:
