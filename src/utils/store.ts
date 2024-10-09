@@ -2,14 +2,19 @@ import { useSyncExternalStore } from "react";
 import { Observable } from "./observable";
 import { Observer } from "../types";
 
-class Store<T> {
+class Store<T>{
     
     constructor(private initialData: T,private observable:Observable){}
-
-    set(data:T){
-        this.initialData = data;
+    
+    set(data: T | ((prev?:T) => T)){
+        if(typeof data === "function"){
+            this.initialData = (data as (prev?:T) => T)(this.initialData);
+        }
+        else{
+            this.initialData = data;
+        }
         this.observable.notify();
-    }
+    };
 
     get(){
         return this.initialData;
@@ -25,7 +30,6 @@ const createExternalStore = <T>(subscribe: (onStoreChange: Observer) => () => vo
 export function create<T>(initial: T){
     const observable = new Observable();
     const store = new Store(initial,observable)
-    
     return () => {
         const state = createExternalStore(observable.subscribe.bind(observable),store.get.bind(store))
         
