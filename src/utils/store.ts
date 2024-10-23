@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 import { Observable } from "./observable";
 import { Observer } from "../types";
 
-class Store<T>{
+export class Store<T>{
     
     constructor(private initialData: T,private observable:Observable){}
     
@@ -22,7 +22,7 @@ class Store<T>{
 
 }
 
-const createExternalStore = <T>(subscribe: (onStoreChange: Observer) => () => void, snapshot: () => T) => {
+export const createExternalStore = <T>(subscribe: (onStoreChange: Observer) => () => void, snapshot: () => T) => {
     const external = useSyncExternalStore(subscribe,snapshot)
     return external
 }

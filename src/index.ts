@@ -1,1 +1,1 @@
-export * from './utils/store'
+export {create} from './utils/store'

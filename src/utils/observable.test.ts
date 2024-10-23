@@ -1,9 +1,12 @@
-import { beforeEach } from "node:test";
+import { afterEach, beforeEach } from "node:test";
 import { beforeAll, describe, expect, test, vi } from "vitest";
 import { Observable } from "./observable";
 
 describe("Observable",()=>{
-    
+    afterEach(() => {
+        vi.restoreAllMocks()
+    })
+
     let observer: Observable;
 
     beforeAll(()=>{
