@@ -10,7 +10,12 @@
     "type": "git",
     "url": "https://github.com/manuelbento19/state-man.git"
   },
-  "keywords": ["react","state-management","context-api","zustand"],
+  "keywords": [
+    "react",
+    "state-management",
+    "context-api",
+    "zustand"
+  ],
   "files": [
     "./dist"
   ],
@@ -20,6 +25,8 @@
   },
   "scripts": {
     "build": "tsc && vite build",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -28,10 +35,13 @@
     "vite-plugin-dts": "^4.2.3"
   },
   "devDependencies": {
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
+    "jsdom": "^25.0.1",
     "typescript": "^5.5.3",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vitest": "^2.1.2"
   }
 }
