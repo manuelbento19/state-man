@@ -8,6 +8,10 @@
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "Bundler",
+    "baseUrl": "./src",
+    "paths": {
+      "@base/*": ["./src/*"]
+    },
   },
   "include": ["src"]
 }

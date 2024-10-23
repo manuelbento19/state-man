@@ -1,7 +1,7 @@
 import { Observer } from "../types";
 
 export class Observable{
-    private observers: Observer[] = []
+    public observers: Observer[] = []
 
     constructor(){
         this.observers = []
