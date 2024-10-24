@@ -1,7 +1,7 @@
-import { beforeAll, describe, expect, test, vi } from "vitest";
+import { beforeAll, describe, expect, it, test, vi } from "vitest";
 import { createExternalStore, Store } from "./store";
 import { Observable } from "./observable";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Observer } from "types";
 
 describe("Store",()=>{
@@ -30,15 +30,19 @@ describe("Store",()=>{
         expect(store.get()).toBe(5);
     })
     test("create external store",()=> {
-        const subscribe = vi.fn((callback:Observer)=>{
+        const subscribe = vi.fn((_callback:Observer)=>{
             return () => {}
         })
         const snapshot = vi.fn(()=>{})
         
-        const ExternalStoreHook = () => {
-            return <h1></h1>
+        const ExternalStoreHook = () =>  {
+            createExternalStore(subscribe,snapshot);
+            return <h1>Page</h1>
         };
         const {container} = render(<ExternalStoreHook/>)
-        expect(container).toBeTruthy()
+        expect(container).toBeTruthy();
+        expect(screen.getByRole("heading")).toBeDefined();
+        expect(subscribe).toHaveBeenCalled();
+        expect(snapshot).toHaveBeenCalled();
     })
 })
