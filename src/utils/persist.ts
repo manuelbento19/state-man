@@ -20,10 +20,12 @@ export function persist<T>(props:Props<T>) : Persist<T>{
         }
         catch{
             data = props.data
+            storage.setItem(props.name, JSON.stringify(props.data))
         }
     }
     else {
         data = props.data;
+        storage.setItem(props.name, JSON.stringify(props.data))
     }
     
     const observable = new Observable();
@@ -31,7 +33,7 @@ export function persist<T>(props:Props<T>) : Persist<T>{
     
     const setItem = (item: Setter<T>) => {
         store.set(item);
-        storage.setItem(props.name, JSON.stringify(store.get.bind(store)))
+        storage.setItem(props.name, JSON.stringify(store.get()))
     }
 
     return {

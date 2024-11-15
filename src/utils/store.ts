@@ -45,7 +45,7 @@ export function create<T>(initial: T | Persist<T>){
     }
 
     return () => {
-        const state = createExternalStore(observable.subscribe.bind(observable),store.get.bind(store))
+        const state: T = createExternalStore(observable.subscribe.bind(observable),store.get.bind(store))
         
         return {
             state,

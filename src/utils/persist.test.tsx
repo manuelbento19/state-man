@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { persist } from "./persist";
 import { create } from "./store";
-import { render,renderHook } from "@testing-library/react";
+import { render,cleanup,renderHook,fireEvent, act, screen } from "@testing-library/react";
 import PersistComponent from "../tests/PersistComponent";
 
 describe("Persisting store data",()=>{
@@ -12,6 +12,7 @@ describe("Persisting store data",()=>{
         spyGetItem.mockClear();
         spySetItem.mockClear();
         localStorage.clear()
+        cleanup()
     })
 
     test("should create persisted data",()=>{
@@ -41,10 +42,19 @@ describe("Persisting store data",()=>{
         expect(state).toEqual(1);
     })
     test("should persist data on localStorage",()=>{
-        const {getByRole} = render(<PersistComponent/>)
+        renderHook(()=> persist({
+            data:1,
+            name: "Dev"
+        }))
         expect(spyGetItem).toHaveBeenCalled();
-        expect(spyGetItem).toHaveBeenCalled();
-        expect(getByRole("heading").innerHTML).toBe("Count is: 1");
+        expect(spySetItem).toHaveBeenCalled();
+    })
+    test("should change data on localStorage",()=>{
+        render(<PersistComponent/>)
+        expect(screen.getByRole("heading").innerHTML).toBe("Count is: 1");
+        const buttons = screen.getAllByRole("button");
+        act(()=>fireEvent.click(buttons[1]))
+        expect(screen.getByRole("heading").innerHTML).toBe("Count is: 2");
     })
 })
 

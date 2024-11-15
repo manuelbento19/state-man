@@ -1,12 +1,15 @@
 import {create,persist} from '..';
 
+const persistedData = persist({
+    data: 1,
+    name:"count",
+})
+
+const useStore = create(persistedData);
+
 export default function PersistComponent() {
-    const persistedData = persist({
-        data: 1,
-        name:"count",
-    })
     
-    const useStore = create(persistedData);
+    
     const {state,setState} = useStore();
     
     return (
