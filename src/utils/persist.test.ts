@@ -10,8 +10,8 @@ describe("Persisting store data",()=>{
         })
 
         expect(persistedData).toBeTruthy();
-        expect(persistedData.name).toBeDefined();
-        expect(persistedData.data).toBeDefined();
-        expect(persistedData.name).toBeDefined();
+        expect(persistedData.store).toBeDefined();
+        expect(persistedData.setItem).toBeDefined();
+        expect(persistedData.observable).toBeDefined();
     })
 })

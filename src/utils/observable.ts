@@ -1,6 +1,7 @@
+import { IObservable } from "interfaces";
 import { Observer } from "../types";
 
-export class Observable{
+export class Observable implements IObservable{
     public observers: Observer[] = []
 
     constructor(){

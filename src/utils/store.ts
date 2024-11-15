@@ -1,12 +1,13 @@
 import { useSyncExternalStore } from "react";
 import { Observable } from "./observable";
-import { Observer } from "../types";
+import { Observer, Setter } from "../types";
+import { IStore } from "interfaces";
 
-export class Store<T>{
+export class Store<T> implements IStore<T>{
     
     constructor(private initialData: T,private observable:Observable){}
     
-    set(data: T | ((prev?:T) => T)){
+    set(data: Setter<T>){
         if(typeof data === "function"){
             this.initialData = (data as (prev?:T) => T)(this.initialData);
         }
