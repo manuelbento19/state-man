@@ -1,9 +1,19 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { persist } from "./persist";
 import { create } from "./store";
-import { renderHook } from "@testing-library/react";
+import { render,renderHook } from "@testing-library/react";
+import PersistComponent from "../tests/PersistComponent";
 
 describe("Persisting store data",()=>{
+    const spyGetItem = vi.spyOn(Storage.prototype,"getItem");
+    const spySetItem = vi.spyOn(Storage.prototype,"setItem");
+
+    afterEach(() => {
+        spyGetItem.mockClear();
+        spySetItem.mockClear();
+        localStorage.clear()
+    })
+
     test("should create persisted data",()=>{
         const persistedData = persist({
             data: 1,
@@ -30,4 +40,11 @@ describe("Persisting store data",()=>{
 
         expect(state).toEqual(1);
     })
+    test("should persist data on localStorage",()=>{
+        const {getByRole} = render(<PersistComponent/>)
+        expect(spyGetItem).toHaveBeenCalled();
+        expect(spyGetItem).toHaveBeenCalled();
+        expect(getByRole("heading").innerHTML).toBe("Count is: 1");
+    })
 })
+
