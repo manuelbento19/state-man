@@ -1,18 +1,17 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { persist } from "./persist";
-import { create } from "./store";
+import { persist } from "../utils/persist";
+import { create } from "../utils/store";
 import { render,cleanup,renderHook,fireEvent, act, screen } from "@testing-library/react";
-import PersistComponent from "../tests/PersistComponent";
+import PersistComponent from "./PersistComponent";
 
 describe("Persisting store data",()=>{
     const spyGetItem = vi.spyOn(Storage.prototype,"getItem");
     const spySetItem = vi.spyOn(Storage.prototype,"setItem");
 
     afterEach(() => {
-        spyGetItem.mockClear();
-        spySetItem.mockClear();
-        localStorage.clear()
+        vi.clearAllMocks()
         cleanup()
+        localStorage.clear()
     })
 
     test("should create persisted data",()=>{

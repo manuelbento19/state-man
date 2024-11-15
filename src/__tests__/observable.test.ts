@@ -1,6 +1,6 @@
-import { afterEach, beforeEach } from "node:test";
+import { afterEach } from "node:test";
 import { beforeAll, describe, expect, test, vi } from "vitest";
-import { Observable } from "./observable";
+import { Observable } from "../utils/observable";
 
 describe("Observable",()=>{
     afterEach(() => {

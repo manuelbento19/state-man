@@ -1,7 +1,7 @@
-import { beforeAll, describe, expect, test, vi } from "vitest";
-import { create, createExternalStore, Store } from "./store";
-import { Observable } from "./observable";
-import { renderHook } from "@testing-library/react";
+import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
+import { create, createExternalStore, Store } from "../utils/store";
+import { Observable } from "../utils/observable";
+import { cleanup, renderHook } from "@testing-library/react";
 import { Observer } from "types";
 
 describe("Store",()=>{
@@ -12,6 +12,10 @@ describe("Store",()=>{
     beforeAll(()=>{
         observable = new Observable();
         store = new Store(initialData,observable);    
+    })
+    afterEach(() => {
+        vi.clearAllMocks()
+        cleanup()
     })
 
     test("create store",()=> {
