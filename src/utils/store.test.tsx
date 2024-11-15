@@ -1,7 +1,7 @@
-import { beforeAll, describe, expect, it, test, vi } from "vitest";
-import { createExternalStore, Store } from "./store";
+import { beforeAll, describe, expect, test, vi } from "vitest";
+import { create, createExternalStore, Store } from "./store";
 import { Observable } from "./observable";
-import { render, screen } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { Observer } from "types";
 
 describe("Store",()=>{
@@ -26,7 +26,7 @@ describe("Store",()=>{
         expect(store.get()).toBe(2);
     })
     test("set data with previous data",()=> {
-        store.set(previous=>previous+3)
+        store.set(previous=>previous!+3)
         expect(store.get()).toBe(5);
     })
     test("create external store",()=> {
@@ -34,15 +34,15 @@ describe("Store",()=>{
             return () => {}
         })
         const snapshot = vi.fn(()=>{})
-        
-        const ExternalStoreHook = () =>  {
-            createExternalStore(subscribe,snapshot);
-            return <h1>Page</h1>
-        };
-        const {container} = render(<ExternalStoreHook/>)
-        expect(container).toBeTruthy();
-        expect(screen.getByRole("heading")).toBeDefined();
+        renderHook(()=>createExternalStore(subscribe,snapshot))
         expect(subscribe).toHaveBeenCalled();
         expect(snapshot).toHaveBeenCalled();
+    })
+
+    test("create store hook",()=>{
+        const useStore = create(50)
+        const {result: {current}} = renderHook(()=>useStore())
+        const {state} = current;
+        expect(state).toStrictEqual(50);
     })
 })
