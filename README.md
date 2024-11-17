@@ -68,9 +68,29 @@ function App() {
     </div>
   )
 }
-
+co
 export default App
 ```
+### Persisting Store Data
+You can persist your store's data across sessions by saving it to a storage medium such as localStorage, sessionStorage, or other available storage options. This ensures that the data is retained even when the page is reloaded or the browser is closed and reopened.
+
+```jsx
+import { create, persist } from '@bentoo/state-man'
+
+const useUserStore = create(
+  persist({
+    name: 'userStoreKey',
+    data: { name: 'Bentoooo' },
+    storage: sessionStorage 
+  })
+)
+```
+#### `persist` Properties
+| Property   | Type      | Description                                                                                             |
+|------------|-----------|---------------------------------------------------------------------------------------------------------|
+| `name`     | `string`  | Unique name of the store, used as a key to store and retrieve data from storage.                        |
+| `data`     | `any`     | Initial state value of the store. Can be any data type (number, string, object, array, etc.).           |
+| `storage`  | `Storage` | Type of storage used for persistence. By default, it uses `localStorage`. It can be: `localStorage`, `sessionStorage`, etc. |
 
 ## Why @bentoo/state-man over Context API?
 - Only components that actually need to be updated are rendered
