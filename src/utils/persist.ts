@@ -1,44 +1,36 @@
-import { Persist, Setter } from "types";
+import { PersistObject, PersistProps, Setter } from "types";
 import { Observable } from "./observable";
 import { Store } from "./store";
 
-type Props<T> = {
-    name: string;
-    data: T;
-    storage?: Storage;
-}
-
-export function persist<T>(props:Props<T>) : Persist<T>{
+export function persist<T>(props: PersistProps<T>): PersistObject<T> {
     let storage = props.storage || localStorage;
-
     let data: T;
+
     const stored = storage.getItem(props.name);
-    
-    if(stored){
-        try{
+
+    if (stored) {
+        try {
             data = JSON.parse(stored);
+        } catch {
+            data = props.data;
+            storage.setItem(props.name, JSON.stringify(props.data));
         }
-        catch{
-            data = props.data
-            storage.setItem(props.name, JSON.stringify(props.data))
-        }
-    }
-    else {
+    } else {
         data = props.data;
-        storage.setItem(props.name, JSON.stringify(props.data))
+        storage.setItem(props.name, JSON.stringify(props.data));
     }
-    
+
     const observable = new Observable();
-    const store = new Store(data,observable)
-    
+    const store = new Store(data, observable);
+
     const setItem = (item: Setter<T>) => {
         store.set(item);
-        storage.setItem(props.name, JSON.stringify(store.get()))
-    }
+        storage.setItem(props.name, JSON.stringify(store.get()));
+    };
 
     return {
         store,
         observable,
-        setItem
-    }
+        setItem,
+    };
 }
