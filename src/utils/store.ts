@@ -4,25 +4,19 @@ import { Observer, PersistObject, Setter } from "../types";
 import { Observable } from "./observable";
 
 export class Store<T> implements IStore<T> {
-    #initialData: T;
-    #observable: IObservable;
-
-    constructor(initialData: T, observable: IObservable) {
-        this.#initialData = initialData;
-        this.#observable = observable;
-    }
+    constructor(private initialData: T, private observable: IObservable) {}
 
     set(data: Setter<T>) {
         if (typeof data === "function") {
-            this.#initialData = (data as (prev?: T) => T)(this.#initialData);
+            this.initialData = (data as (prev?: T) => T)(this.initialData);
         } else {
-            this.#initialData = data;
+            this.initialData = data;
         }
-        this.#observable.notify();
+        this.observable.notify();
     }
 
     get() {
-        return this.#initialData;
+        return this.initialData;
     }
 }
 
