@@ -1,22 +1,24 @@
 import { IObservable } from "interfaces";
 import { Observer } from "../types";
 
-export class Observable implements IObservable{
-    public observers: Observer[] = []
+export class Observable implements IObservable {
+    public observers: Observer[] = [];
 
-    constructor(){
-        this.observers = []
+    constructor() {
+        this.observers = [];
     }
 
-    public subscribe(observer: Observer){
+    public subscribe(observer: Observer) {
         this.observers.push(observer);
         return () => this.unsubscribe(observer);
     }
 
-    private unsubscribe(observer: Observer){
-        this.observers = this.observers.filter(callback=>callback!=observer);
+    private unsubscribe(observer: Observer) {
+        this.observers = this.observers.filter(
+            (callback) => callback != observer,
+        );
     }
-    public notify(){
-        this.observers.forEach(observer=>observer())
+    public notify() {
+        this.observers.forEach((observer) => observer());
     }
 }

@@ -32,74 +32,79 @@ pnpm add @bentoo/state-man
 Here’s a basic example of how to use `@bentoo/state-man` in your project:
 
 ### 1. create a store
+
 ```tsx
 // ./stores/counter.ts
-import { create } from '@bentoo/state-man'
+import { create } from "@bentoo/state-man";
 
-export const useStore = create(0)
-
+export const useStore = create(0);
 ```
+
 ### 2. use your store anywhere
+
 ```tsx
 // counter.tsx
 export const Counter = () => {
-  const {state,setState} = useStore()
+    const { state, setState } = useStore();
 
-  const increment = () => setState(state + 1);
+    const increment = () => setState(state + 1);
 
-  return (
-    <button onClick={increment}>
-      Count is {state}
-    </button>
-  );
-}
+    return <button onClick={increment}>Count is {state}</button>;
+};
+```
 
+```tsx
 // App.tsx
-import Counter from './counter'
-import { useStore } from './stores/counter'
+import Counter from "./counter";
+import { useStore } from "./stores/counter";
 
 function App() {
-  const {state} = useStore()
+    const { state } = useStore();
 
-  return (
-    <div className="card">
-      <h1>Now the counter is: {state}</h1>
-      <Counter/>
-    </div>
-  )
+    return (
+        <div className="card">
+            <h1>Now the counter is: {state}</h1>
+            <Counter />
+        </div>
+    );
 }
-co
-export default App
+export default App;
 ```
+
 ### Persisting Store Data
-You can persist your store's data across sessions by saving it to a storage medium such as localStorage, sessionStorage, or other available storage options. This ensures that the data is retained even when the page is reloaded or the browser is closed and reopened.
+
+You can persist store's data across sessions by saving it to a storage medium such as localStorage, sessionStorage, or other available storage options. This ensure that the data is retained even when the page is reloaded or the browser is closed and reopened.
 
 ```jsx
-import { create, persist } from '@bentoo/state-man'
+import { create, persist } from "@bentoo/state-man";
 
 const useUserStore = create(
-  persist({
-    name: 'userStoreKey',
-    data: { name: 'Bentoooo' },
-    storage: sessionStorage 
-  })
-)
+    persist({
+        name: "userStoreKey",
+        data: { name: "Bentoooo" },
+        storage: sessionStorage,
+    }),
+);
 ```
+
 #### `persist` Properties
-| Property   | Type      | Description                                                                                             |
-|------------|-----------|---------------------------------------------------------------------------------------------------------|
-| `name`     | `string`  | Unique name of the store, used as a key to store and retrieve data from storage.                        |
-| `data`     | `any`     | Initial state value of the store. Can be any data type (number, string, object, array, etc.).           |
-| `storage`  | `Storage` | Type of storage used for persistence. By default, it uses `localStorage`. It can be: `localStorage`, `sessionStorage`, etc. |
+
+| Property  | Type      | Description                                                                                                                 |
+| --------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `name`    | `string`  | Unique name of the store, used as a key to store and retrieve data from storage.                                            |
+| `data`    | `any`     | Initial state value of the store. Can be any data type (number, string, object, array, etc.).                               |
+| `storage` | `Storage` | Type of storage used for persistence. By default, it uses `localStorage`. It can be: `localStorage`, `sessionStorage`, etc. |
 
 ## Why @bentoo/state-man over Context API?
-- Only components that actually need to be updated are rendered
-- Avoid unnecessary re-renders
-- Offers a lighter configuration and less overhead, no context providers anymore
+
+-   Only components that needs to be updated are rendered
+-   Avoid unnecessary re-renders
+-   Offers a lighter configuration and less overhead, no context providers anymore
 
 ## Why @bentoo/state-man over Zustand?
-- Offers a lighter configuration and less overhead
-- Simple and un-opinionated
+
+-   Offers a lighter configuration and less overhead
+-   Simple and un-opinionated
 
 ## Contribution
 
