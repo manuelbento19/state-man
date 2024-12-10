@@ -1,10 +1,18 @@
 import { IObservable, IStore } from "interfaces";
 
-export type Setter<T> = T | ((prev?:T) => T)
-export type Observer = () => void;
+type Setter<T> = T | ((prev?: T) => T);
+type Observer = () => void;
 
-export type Persist<T> = {
+type PersistObject<T> = {
     store: IStore<T>;
     observable: IObservable;
     setItem: (item: Setter<T>) => void;
-}
+};
+
+type PersistProps<T> = {
+    name: string;
+    data: T;
+    storage?: Storage;
+};
+
+export type { PersistProps, Setter, PersistObject, Observer };
