@@ -5,8 +5,8 @@ const key = await generateKey("State-Man");
 const data = "I'm State Man";
 
 describe('Crypt and decrypt', () => {
-    test("should encrypt a data",()=>{
-        const encrypted = encrypt(data,key);
+    test("should encrypt a data",async()=>{
+        const encrypted = await encrypt(data,key);
         expect(encrypted).not.toBe(data)
     })
     test("should decrypt a data",async()=>{
