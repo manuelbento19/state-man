@@ -1,10 +1,28 @@
 import { PersistObject, PersistProps, Setter } from "types";
 import { Observable } from "./observable";
 import { Store } from "./store";
+import validation from "./validation";
 
 export function persist<T>(props: PersistProps<T>): PersistObject<T> {
-    let storage = props.storage || localStorage;
+    if(!props.name){
+        throw new Error("You must provide a name for the persisted store");
+    }
     let data: T;
+    let storage: Storage;
+    
+    if(validation.isClientSide()){
+        storage = props.storage || window.localStorage;
+    }
+    else{
+        storage = props.storage || {
+            getItem: () => null,
+            setItem: () => null,
+            length: 0,
+            clear: () => {},
+            key: () => null,
+            removeItem: () => {},
+        };
+    }
 
     const stored = storage.getItem(props.name);
 
@@ -26,9 +44,11 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
     const setItem = (item: Setter<T>) => {
         store.set(item);
         storage.setItem(props.name, JSON.stringify(store.get()));
+        
     };
 
     return {
+        key: props.name,
         store,
         observable,
         setItem,
