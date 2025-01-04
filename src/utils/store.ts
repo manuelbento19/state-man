@@ -2,6 +2,7 @@ import { IObservable, IStore } from "interfaces";
 import { useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter } from "../types";
 import { Observable } from "./observable";
+import { useSync } from "./sync";
 
 export class Store<T> implements IStore<T> {
     constructor(private initialData: T, private observable: IObservable) {}
@@ -47,7 +48,13 @@ export function create<T>(initial: T | PersistObject<T>) {
             observable.subscribe.bind(observable),
             store.get.bind(store),
         );
-
+        if(isPersisted){
+            const {key} = initial as PersistObject<T>
+            useSync({
+                key,
+                store,
+            })
+        }
         return {
             state,
             setState: isPersisted
