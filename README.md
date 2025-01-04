@@ -73,7 +73,9 @@ export default App;
 
 ### Persisting Store Data
 
-You can persist store's data across sessions by saving it to a storage medium such as localStorage, sessionStorage, or other available storage options. This ensure that the data is retained even when the page is reloaded or the browser is closed and reopened.
+You can persist a store's data across sessions by saving it to a storage medium such as `localStorage`, `sessionStorage`, or other available storage options. This ensures that the data is retained even when the page is reloaded or the browser is closed and reopened.
+
+Additionally, it is possible to synchronize the store's state across different tabs or windows. When a change is made in one tab or window, all other tabs or windows that share the same storage context. This allows you to update the state seamlessly across multiple views.
 
 ```jsx
 import { create, persist } from "@bentoo/state-man";
@@ -86,6 +88,9 @@ const useUserStore = create(
     }),
 );
 ```
+
+This approach ensures both persistence and synchronization, enabling a consistent experience for users working across multiple tabs or windows.
+
 
 #### `persist` Properties
 
