@@ -52,5 +52,6 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
         store,
         observable,
         setItem,
+        initialData: props.data
     };
 }

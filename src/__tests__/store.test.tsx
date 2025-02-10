@@ -38,7 +38,8 @@ describe("Store", () => {
             return () => {};
         });
         const snapshot = vi.fn(() => {});
-        renderHook(() => createExternalStore(subscribe, snapshot));
+        const serverSnapshot = vi.fn(() => {});
+        renderHook(() => createExternalStore(subscribe, snapshot, serverSnapshot));
         expect(subscribe).toHaveBeenCalled();
         expect(snapshot).toHaveBeenCalled();
     });

@@ -8,6 +8,7 @@ type PersistObject<T> = {
     store: IStore<T>;
     observable: IObservable;
     setItem: (item: Setter<T>) => void;
+    initialData: T;
 };
 
 type PersistProps<T> = {
