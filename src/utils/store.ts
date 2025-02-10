@@ -1,5 +1,5 @@
 import { IObservable, IStore } from "interfaces";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter } from "../types";
 import { Observable } from "./observable";
 import { syncStoreData } from "./sync";
@@ -24,8 +24,10 @@ export class Store<T> implements IStore<T> {
 export const createExternalStore = <T>(
     subscribe: (onStoreChange: Observer) => () => void,
     snapshot: () => T,
+    serverSnapshot: () => T
 ) => {
-    return useSyncExternalStore(subscribe, snapshot);
+
+    return useSyncExternalStore(subscribe, snapshot, serverSnapshot);
 };
 
 export function create<T>(initial: T | PersistObject<T>) {
@@ -38,23 +40,29 @@ export function create<T>(initial: T | PersistObject<T>) {
         let persistedData = initial as PersistObject<T>;
         observable = persistedData.observable;
         store = persistedData.store;
+        const {key} = initial as PersistObject<T>;
+        syncStoreData({
+            key,
+            store,
+        })
     } else {
         observable = new Observable();
         store = new Store(initial as T, observable);
     }
 
     return () => {
+        const getServerSnapshot = () => {
+            if(isPersisted)
+            return (initial as PersistObject<T>)?.initialData;
+            return initial as T;
+        }
+
         const state: T = createExternalStore(
             observable.subscribe.bind(observable),
             store.get.bind(store),
+            getServerSnapshot
         );
-        if(isPersisted){
-            const {key} = initial as PersistObject<T>
-            syncStoreData({
-                key,
-                store,
-            })
-        }
+
         return {
             state,
             setState: isPersisted
