@@ -1,5 +1,5 @@
 import { IObservable, IStore } from "interfaces";
-import { useSyncExternalStore } from "react";
+import React, { useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter } from "../types";
 import { Observable } from "./observable";
 import { syncStoreData } from "./sync";
@@ -26,7 +26,11 @@ export const createExternalStore = <T>(
     snapshot: () => T,
     serverSnapshot: () => T
 ) => {
-
+    
+    if (typeof useSyncExternalStore === 'undefined' || useSyncExternalStore === null) {
+        throw new Error('useSyncExternalStore is not available. Please ensure you are using React 18 or higher.');
+    }
+    
     return useSyncExternalStore(subscribe, snapshot, serverSnapshot);
 };
 
