@@ -11,29 +11,32 @@ export function createSelector<T, U>(
 ) {
     let previousSelected: U | undefined;
     let previousState: T | undefined;
-    let hasSelected = false;
+    let cacheInitialized = false;
+
+    function selectAndUpdateCache(state: T): boolean {
+        const selected = selector(state);
+        const changed = !cacheInitialized || !shallow(previousSelected!, selected);
+
+        if (changed) {
+            previousSelected = selected;
+            previousState = state;
+            cacheInitialized = true;
+        }
+
+        return changed;
+    }
 
     const subscribe = (callback: Observer) => {
         return observable.subscribe(() => {
             const currentState = store.get();
 
-            if (hasSelected && Object.is(previousState, currentState)) {
+            if (cacheInitialized && Object.is(previousState, currentState)) {
                 return;
             }
 
-            const currentSelected = selector(currentState);
+            const didChange = selectAndUpdateCache(currentState);
 
-            if (!hasSelected) {
-                previousSelected = currentSelected;
-                previousState = currentState;
-                hasSelected = true;
-                callback();
-                return;
-            }
-
-            if (!shallow(previousSelected!, currentSelected)) {
-                previousSelected = currentSelected;
-                previousState = currentState;
+            if (didChange) {
                 callback();
             }
         });
@@ -42,25 +45,16 @@ export function createSelector<T, U>(
     const getSnapshot = () => {
         const currentState = store.get();
 
-        if (hasSelected && shallow(previousState, currentState)) {
+        if (cacheInitialized && shallow(previousState, currentState)) {
             return previousSelected!;
         }
 
-        const currentSelected = selector(currentState);
-
-        // Update the cache only when needed
-        if (!hasSelected || !shallow(previousSelected!, currentSelected)) {
-            previousSelected = currentSelected;
-            previousState = currentState;
-            hasSelected = true;
-        }
-
-        return currentSelected;
+        selectAndUpdateCache(currentState);
+        return previousSelected!;
     };
 
     const getServerSnapshotSelected = () => {
-        const serverState = getServerSnapshot();
-        return selector(serverState);
+        return selector(getServerSnapshot());
     };
 
     return createExternalStore(subscribe, getSnapshot, getServerSnapshotSelected);
