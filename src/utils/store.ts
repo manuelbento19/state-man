@@ -1,5 +1,5 @@
 import { IObservable, IStore } from "interfaces";
-import React, { useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter, Selector, UseStore } from "../types";
 import { Observable } from "./observable";
 import { syncStoreData } from "./sync";
