@@ -2,7 +2,7 @@
     "name": "@bentoo/state-man",
     "description": "A lightweight package for state management in React applications, designed as a simplified alternative to Zustand and the Context API.",
     "private": false,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -10,6 +10,7 @@
         "type": "git",
         "url": "https://github.com/manuelbento19/state-man.git"
     },
+    "homepage": "https://www.stateman.cc/",
     "keywords": [
         "react",
         "state-management",
@@ -21,7 +22,8 @@
     ],
     "author": {
         "name": "Manuel Bento",
-        "email": "manuelbentomb.223@hotmail.com"
+        "email": "manuelbentomb.223@hotmail.com",
+        "url": "https://bentooo.vercel.app/"
     },
     "scripts": {
         "build": "tsc && vite build",
