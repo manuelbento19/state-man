@@ -12,12 +12,9 @@ import { create } from "../utils/store";
 import PersistComponent from "./PersistComponent";
 
 describe("Persisting store data", () => {
-    const spyGetItem = vi.spyOn(Storage.prototype, "getItem");
-    const spySetItem = vi.spyOn(Storage.prototype, "setItem");
-
     afterEach(() => {
-        vi.clearAllMocks();
         cleanup();
+        vi.restoreAllMocks();
         localStorage.clear();
     });
 
@@ -50,6 +47,9 @@ describe("Persisting store data", () => {
         expect(state).toEqual(1);
     });
     test("should persist data on localStorage", () => {
+        const spyGetItem = vi.spyOn(Storage.prototype, "getItem");
+        const spySetItem = vi.spyOn(Storage.prototype, "setItem");
+
         renderHook(() =>
             persist({
                 data: 1,
