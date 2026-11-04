@@ -42,7 +42,7 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     const isPersisted = (initial as PersistObject<T>)?.setItem !== undefined;
 
     if (isPersisted) {
-        let persistedData = initial as PersistObject<T>;
+        const persistedData = initial as PersistObject<T>;
         observable = persistedData.observable;
         store = persistedData.store;
         const {key} = initial as PersistObject<T>;
