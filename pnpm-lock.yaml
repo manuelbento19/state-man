@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      vite-plugin-dts:
-        specifier: ^4.2.3
-        version: 4.2.3(@types/node@22.7.5)(rollup@4.22.5)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5))
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.6.2
@@ -48,6 +44,9 @@ importers:
       vite:
         specifier: ^5.4.1
         version: 5.4.8(@types/node@22.7.5)
+      vite-plugin-dts:
+        specifier: ^4.2.3
+        version: 4.2.3(@types/node@22.7.5)(rollup@4.22.5)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5))
       vitest:
         specifier: ^2.1.2
         version: 2.1.2(@types/node@22.7.5)(jsdom@25.0.1)
