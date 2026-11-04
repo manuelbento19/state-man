@@ -45,6 +45,17 @@ describe("Store", () => {
         expect(callback).not.toHaveBeenCalled();
     });
 
+    test("should not treat plain objects with setItem as persisted", () => {
+        const initial = { value: 1, setItem: vi.fn() };
+        const useStore = create(initial);
+        const {
+            result: { current },
+        } = renderHook(() => useStore());
+
+        expect(current.state).toEqual(initial);
+        expect(typeof current.setState).toBe("function");
+    });
+
     test("should notify when data changes", () => {
         const localObservable = new Observable();
         const localStore = new Store(0, localObservable);

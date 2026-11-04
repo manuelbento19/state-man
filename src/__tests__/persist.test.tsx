@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { persist } from "../utils/persist";
+import { PERSIST_MARKER } from "../utils/persistMarker";
 import { create } from "../utils/store";
 import PersistComponent from "./PersistComponent";
 
@@ -29,6 +30,14 @@ describe("Persisting store data", () => {
         expect(persistedData.store).toBeDefined();
         expect(persistedData.setItem).toBeDefined();
         expect(persistedData.observable).toBeDefined();
+    });
+    test("should mark persisted objects", () => {
+        const persistedData = persist({
+            data: 1,
+            name: "marked",
+        });
+
+        expect(persistedData[PERSIST_MARKER]).toBe(true);
     });
     test("should create store with persisted data", () => {
         const persistedData = persist({

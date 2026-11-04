@@ -1,10 +1,12 @@
 import { IObservable, IStore } from "interfaces";
+import { PERSIST_MARKER } from "../utils/persistMarker";
 import { Selector } from "./selector";
 
 type Setter<T> = T | ((prev?: T) => T);
 type Observer = () => void;
 
 type PersistObject<T> = {
+    [PERSIST_MARKER]: true;
     key: string;
     store: IStore<T>;
     observable: IObservable;

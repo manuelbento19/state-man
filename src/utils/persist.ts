@@ -1,5 +1,6 @@
 import { PersistObject, PersistProps, Setter } from "types";
 import { Observable } from "./observable";
+import { PERSIST_MARKER } from "./persistMarker";
 import { Store } from "./store";
 import validation from "./validation";
 
@@ -59,6 +60,7 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
     };
 
     return {
+        [PERSIST_MARKER]: true,
         key: props.name,
         store,
         observable,

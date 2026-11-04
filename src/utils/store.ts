@@ -2,6 +2,7 @@ import { IObservable, IStore } from "interfaces";
 import { useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter, Selector, UseStore } from "../types";
 import { Observable } from "./observable";
+import { PERSIST_MARKER } from "./persistMarker";
 import { syncStoreData } from "./sync";
 import { useSelector } from "./selector";
 
@@ -44,7 +45,8 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     let observable: IObservable;
     let store: IStore<T>;
 
-    const isPersisted = (initial as PersistObject<T>)?.setItem !== undefined;
+    const isPersisted =
+        (initial as PersistObject<T>)?.[PERSIST_MARKER] === true;
 
     if (isPersisted) {
         const persistedData = initial as PersistObject<T>;
@@ -60,7 +62,7 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     const subscribeToStore = observable.subscribe.bind(observable);
     const getStoreSnapshot = store.get.bind(store);
     const setState = isPersisted
-        ? (initial as PersistObject<T>).setItem.bind(store)
+        ? (initial as PersistObject<T>).setItem
         : store.set.bind(store);
 
     const getServerSnapshot = () => {
