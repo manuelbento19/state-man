@@ -55,6 +55,21 @@ describe("Persisting store data", () => {
 
         expect(state).toEqual(1);
     });
+    test("should update persisted state through setState", () => {
+        const persistedData = persist({
+            data: 1,
+            name: "setter",
+        });
+        const useStore = create(persistedData);
+        const { result } = renderHook(() => useStore());
+
+        act(() => {
+            result.current.setState((previous) => previous! + 1);
+        });
+
+        expect(result.current.state).toBe(2);
+        expect(JSON.parse(localStorage.getItem("setter")!)).toBe(2);
+    });
     test("should persist data on localStorage", () => {
         const spyGetItem = vi.spyOn(Storage.prototype, "getItem");
         const spySetItem = vi.spyOn(Storage.prototype, "setItem");
