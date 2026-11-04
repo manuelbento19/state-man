@@ -10,7 +10,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.ts',
-      formats: ['es'],
+      formats: ['es', 'cjs'],
+      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
     },
     rollupOptions: {
       external: [
@@ -24,7 +25,6 @@ export default defineConfig({
           "react-dom": "ReactDOM",
           "react/jsx-runtime": "React"
         },
-        entryFileNames: '[name].js',
         chunkFileNames: '[name]-[hash].js'
       }
     },

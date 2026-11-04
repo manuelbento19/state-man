@@ -4,8 +4,19 @@
     "private": false,
     "version": "1.1.0",
     "type": "module",
-    "main": "./dist/index.js",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "default": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "sideEffects": false,
     "repository": {
         "type": "git",
         "url": "https://github.com/manuelbento19/state-man.git"
