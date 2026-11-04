@@ -9,11 +9,16 @@ export class Store<T> implements IStore<T> {
     constructor(private initialData: T, private observable: IObservable) {}
 
     set(data: Setter<T>) {
-        if (typeof data === "function") {
-            this.initialData = (data as (prev?: T) => T)(this.initialData);
-        } else {
-            this.initialData = data;
+        const nextData =
+            typeof data === "function"
+                ? (data as (prev?: T) => T)(this.initialData)
+                : data;
+
+        if (Object.is(nextData, this.initialData)) {
+            return;
         }
+
+        this.initialData = nextData;
         this.observable.notify();
     }
 

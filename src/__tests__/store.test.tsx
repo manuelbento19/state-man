@@ -33,6 +33,29 @@ describe("Store", () => {
         store.set((previous) => previous! + 3);
         expect(store.get()).toBe(5);
     });
+    test("should not notify when data does not change", () => {
+        const localObservable = new Observable();
+        const localStore = new Store(0, localObservable);
+        const callback = vi.fn();
+        localObservable.subscribe(callback);
+
+        localStore.set(0);
+        localStore.set((previous) => previous!);
+
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    test("should notify when data changes", () => {
+        const localObservable = new Observable();
+        const localStore = new Store(0, localObservable);
+        const callback = vi.fn();
+        localObservable.subscribe(callback);
+
+        localStore.set(1);
+
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+
     test("create external store", () => {
         const subscribe = vi.fn((_callback: Observer) => {
             return () => {};
