@@ -45,4 +45,28 @@ describe("Selector System", () => {
         expect(countResult.current).toBe(initialCount);
         expect(nameResult.current).toBe("changed");
     });
+
+    test("should not re-render when the selected value is shallow-equal", () => {
+        const useStore = create({ count: 0, meta: { label: "initial" } });
+        const { result: storeResult } = renderHook(() => useStore());
+        let renders = 0;
+
+        const { result } = renderHook(() => {
+            renders += 1;
+            return useStore((state) => ({ count: state.count }));
+        });
+
+        const initialSelection = result.current;
+        const initialRenders = renders;
+
+        act(() => {
+            storeResult.current.setState((prev) => ({
+                ...prev!,
+                meta: { label: "changed" },
+            }));
+        });
+
+        expect(renders).toBe(initialRenders);
+        expect(result.current).toBe(initialSelection);
+    });
 });

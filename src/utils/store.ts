@@ -3,7 +3,7 @@ import { useSyncExternalStore } from "react";
 import { Observer, PersistObject, Setter, Selector, UseStore } from "../types";
 import { Observable } from "./observable";
 import { syncStoreData } from "./sync";
-import { createSelector } from "./selector";
+import { useSelector } from "./selector";
 
 export class Store<T> implements IStore<T> {
     constructor(private initialData: T, private observable: IObservable) {}
@@ -52,6 +52,12 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         store = new Store(initial as T, observable);
     }
 
+    const subscribeToStore = observable.subscribe.bind(observable);
+    const getStoreSnapshot = store.get.bind(store);
+    const setState = isPersisted
+        ? (initial as PersistObject<T>).setItem.bind(store)
+        : store.set.bind(store);
+
     const getServerSnapshot = () => {
         if(isPersisted)
         return (initial as PersistObject<T>)?.initialData;
@@ -60,7 +66,7 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
 
     const useStore = function<U>(selector?: Selector<T, U>) {
         if (selector) {
-            return createSelector(
+            return useSelector(
                 store,
                 observable,
                 selector,
@@ -69,14 +75,14 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         }
         else {
             const state: T = createExternalStore(
-                observable.subscribe.bind(observable),
-                store.get.bind(store),
+                subscribeToStore,
+                getStoreSnapshot,
                 getServerSnapshot
             );
 
             return {
                 state,
-                setState: isPersisted ? (initial as PersistObject<T>).setItem.bind(store) : store.set.bind(store),
+                setState,
             };
         }
     } as UseStore<T>;

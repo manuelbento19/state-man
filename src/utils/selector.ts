@@ -1,61 +1,65 @@
+import { useMemo, useRef } from "react";
 import { IObservable, IStore } from "interfaces";
 import { Observer, Selector } from "types";
 import { createExternalStore } from "./store";
 import { shallow } from "./shallow";
 
-export function createSelector<T, U>(
+type SelectionCache<T, U> = {
+    hasValue: boolean;
+    selector: Selector<T, U> | undefined;
+    snapshot: T | undefined;
+    value: U | undefined;
+};
+
+export function useSelector<T, U>(
     store: IStore<T>,
     observable: IObservable,
     selector: Selector<T, U>,
     getServerSnapshot: () => T
 ) {
-    let previousSelected: U | undefined;
-    let previousState: T | undefined;
-    let cacheInitialized = false;
+    const cacheRef = useRef<SelectionCache<T, U>>({
+        hasValue: false,
+        selector: undefined,
+        snapshot: undefined,
+        value: undefined,
+    });
 
-    function selectAndUpdateCache(state: T): boolean {
-        const selected = selector(state);
-        const changed = !cacheInitialized || !shallow(previousSelected!, selected);
+    const subscribe = useMemo(
+        () => (callback: Observer) => observable.subscribe(callback),
+        [observable]
+    );
 
-        if (changed) {
-            previousSelected = selected;
-            previousState = state;
-            cacheInitialized = true;
-        }
-
-        return changed;
-    }
-
-    const subscribe = (callback: Observer) => {
-        return observable.subscribe(() => {
-            const currentState = store.get();
-
-            if (cacheInitialized && Object.is(previousState, currentState)) {
-                return;
-            }
-
-            const didChange = selectAndUpdateCache(currentState);
-
-            if (didChange) {
-                callback();
-            }
-        });
-    };
-
-    const getSnapshot = () => {
+    const getSnapshot = (): U => {
+        const cache = cacheRef.current;
         const currentState = store.get();
 
-        if (cacheInitialized && shallow(previousState, currentState)) {
-            return previousSelected!;
+        if (
+            cache.hasValue &&
+            cache.selector === selector &&
+            Object.is(cache.snapshot, currentState)
+        ) {
+            return cache.value as U;
         }
 
-        selectAndUpdateCache(currentState);
-        return previousSelected!;
+        const nextValue = selector(currentState);
+
+        cache.selector = selector;
+        cache.snapshot = currentState;
+
+        if (cache.hasValue && shallow(cache.value, nextValue)) {
+            return cache.value as U;
+        }
+
+        cache.hasValue = true;
+        cache.value = nextValue;
+
+        return nextValue;
     };
 
-    const getServerSnapshotSelected = () => {
-        return selector(getServerSnapshot());
-    };
+    const getServerSnapshotSelected = useMemo(
+        () => () => selector(getServerSnapshot()),
+        [selector, getServerSnapshot]
+    );
 
     return createExternalStore(subscribe, getSnapshot, getServerSnapshotSelected);
 }
