@@ -15,10 +15,19 @@ export class Observable implements IObservable {
 
     private unsubscribe(observer: Observer) {
         this.observers = this.observers.filter(
-            (callback) => callback != observer,
+            (callback) => callback !== observer,
         );
     }
     public notify() {
-        this.observers.forEach((observer) => observer());
+        for (const observer of [...this.observers]) {
+            try {
+                observer();
+            } catch (error) {
+                console.error(
+                    "[state-man] An observer threw during notification.",
+                    error,
+                );
+            }
+        }
     }
 }
