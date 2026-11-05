@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
-import { Observable } from "../utils/observable";
+import { Observable } from "@/utils/observable";
 
 describe("Observable", () => {
     afterEach(() => {

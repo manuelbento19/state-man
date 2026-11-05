@@ -1,6 +1,6 @@
 import { useMemo, useRef } from "react";
-import { IObservable, IStore } from "interfaces";
-import { Observer, Selector } from "types";
+import { IObservable, IStore } from "@/interfaces";
+import { Observer, Selector } from "@/types";
 import { createExternalStore } from "./store";
 import { shallow } from "./shallow";
 

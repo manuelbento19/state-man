@@ -1,8 +1,8 @@
 import { cleanup, renderHook } from "@testing-library/react";
-import { Observer } from "types";
+import { Observer } from "@/types";
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
-import { Observable } from "../utils/observable";
-import { create, createExternalStore, Store } from "../utils/store";
+import { Observable } from "@/utils/observable";
+import { create, createExternalStore, Store } from "@/utils/store";
 
 describe("Store", () => {
     let store: Store<number>;

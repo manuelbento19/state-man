@@ -1,5 +1,5 @@
-import { IObservable, IStore } from "interfaces";
-import { PERSIST_MARKER } from "../utils/persistMarker";
+import { IObservable, IStore } from "@/interfaces";
+import { PERSIST_MARKER } from "@/utils/persistMarker";
 import { Selector } from "./selector";
 
 type Setter<T> = T | ((prev?: T) => T);

@@ -7,9 +7,9 @@ import {
     screen,
 } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { persist } from "../utils/persist";
-import { PERSIST_MARKER } from "../utils/persistMarker";
-import { create } from "../utils/store";
+import { persist } from "@/utils/persist";
+import { PERSIST_MARKER } from "@/utils/persistMarker";
+import { create } from "@/utils/store";
 import PersistComponent from "./PersistComponent";
 
 describe("Persisting store data", () => {

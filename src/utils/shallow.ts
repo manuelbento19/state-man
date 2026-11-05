@@ -1,4 +1,4 @@
-import { EqualityFn } from "types";
+import { EqualityFn } from "@/types";
 
 export const shallow: EqualityFn<any> = (a, b) => {
     if (Object.is(a, b)) return true;

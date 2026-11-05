@@ -1,4 +1,4 @@
-import { Observer, Setter } from "types";
+import { Observer, Setter } from "@/types";
 
 interface IObservable {
     subscribe(observer: Observer): () => void;

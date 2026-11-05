@@ -1,4 +1,4 @@
-import { PersistObject, PersistProps, Setter } from "types";
+import { PersistObject, PersistProps, Setter } from "@/types";
 import { Observable } from "./observable";
 import { PERSIST_MARKER } from "./persistMarker";
 import { Store } from "./store";

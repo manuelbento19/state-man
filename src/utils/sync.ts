@@ -1,5 +1,5 @@
 import validation from "./validation";
-import { IStore } from "interfaces";
+import { IStore } from "@/interfaces";
 
 type SyncProps<T> = {
     key: string;

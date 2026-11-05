@@ -1,5 +1,5 @@
-import { IObservable } from "interfaces";
-import { Observer } from "../types";
+import { IObservable } from "@/interfaces";
+import { Observer } from "@/types";
 
 export class Observable implements IObservable {
     public observers: Observer[] = [];

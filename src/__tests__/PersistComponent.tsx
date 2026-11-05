@@ -1,4 +1,4 @@
-import { create, persist } from "..";
+import { create, persist } from "@/index";
 
 const persistedData = persist({
     data: 1,

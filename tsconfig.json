@@ -26,11 +26,9 @@
     "isolatedModules": true,
     "noEmit": false,
     "skipLibCheck": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "interfaces": ["./interfaces"],
-      "types": ["./types"],
-      "utils/*": ["./utils/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],
