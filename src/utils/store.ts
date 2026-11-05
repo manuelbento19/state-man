@@ -52,8 +52,8 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         const persistedData = initial as PersistObject<T>;
         observable = persistedData.observable;
         store = persistedData.store;
-        const {key} = initial as PersistObject<T>;
-        syncStoreData({ key, store })
+        const { key, initialData } = initial as PersistObject<T>;
+        syncStoreData({ key, store, initialData });
     } else {
         observable = new Observable();
         store = new Store(initial as T, observable);
