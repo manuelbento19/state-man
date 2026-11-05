@@ -70,6 +70,49 @@ describe("Persisting store data", () => {
         expect(result.current.state).toBe(2);
         expect(JSON.parse(localStorage.getItem("setter")!)).toBe(2);
     });
+    test("should not diverge state and storage when serialization fails", () => {
+        type State = { count: number; self?: State };
+
+        const consoleError = vi
+            .spyOn(console, "error")
+            .mockImplementation(() => {});
+        const persistedData = persist<State>({
+            data: { count: 0 },
+            name: "circular",
+        });
+        const circular: State = { count: 1 };
+        circular.self = circular;
+
+        persistedData.setItem(circular);
+
+        expect(persistedData.store.get()).toEqual({ count: 0 });
+        expect(localStorage.getItem("circular")).toBe(
+            JSON.stringify({ count: 0 }),
+        );
+        expect(consoleError).toHaveBeenCalledWith(
+            '[state-man] Failed to persist data for key "circular". State was not updated.',
+            expect.any(Error),
+        );
+    });
+    test("should not update state when storage write fails", () => {
+        const consoleError = vi
+            .spyOn(console, "error")
+            .mockImplementation(() => {});
+        const persistedData = persist({
+            data: 0,
+            name: "quota",
+        });
+
+        vi.spyOn(Storage.prototype, "setItem").mockImplementationOnce(() => {
+            throw new DOMException("Quota exceeded", "QuotaExceededError");
+        });
+
+        persistedData.setItem(1);
+
+        expect(persistedData.store.get()).toBe(0);
+        expect(localStorage.getItem("quota")).toBe("0");
+        expect(consoleError).toHaveBeenCalled();
+    });
     test("should persist data on localStorage", () => {
         const spyGetItem = vi.spyOn(Storage.prototype, "getItem");
         const spySetItem = vi.spyOn(Storage.prototype, "setItem");

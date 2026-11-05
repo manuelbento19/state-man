@@ -54,9 +54,23 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
     const store = new Store(data, observable);
 
     const setItem = (item: Setter<T>) => {
-        store.set(item);
-        storage.setItem(props.name, JSON.stringify(store.get()));
-        
+        const previous = store.get();
+        const next =
+            typeof item === "function"
+                ? (item as (prev?: T) => T)(previous)
+                : item;
+
+        try {
+            storage.setItem(props.name, JSON.stringify(next));
+        } catch (error) {
+            console.error(
+                `[state-man] Failed to persist data for key "${props.name}". State was not updated.`,
+                error
+            );
+            return;
+        }
+
+        store.set(next);
     };
 
     return {
