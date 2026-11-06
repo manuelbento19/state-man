@@ -18,6 +18,9 @@ export class Observable implements IObservable {
             (callback) => callback !== observer,
         );
     }
+    public clear() {
+        this.observers = [];
+    }
     public notify() {
         for (const observer of [...this.observers]) {
             try {

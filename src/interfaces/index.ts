@@ -3,6 +3,7 @@ import { Observer, Setter } from "@/types";
 interface IObservable {
     subscribe(observer: Observer): () => void;
     notify(): void;
+    clear(): void;
 }
 interface IStore<T> {
     set(data: Setter<T>): void;

@@ -26,6 +26,10 @@ export type UseStore<T> = {
         setState: (data: Setter<T>) => void;
     };
     <U>(selector: Selector<T, U>): U;
+    getState: () => T;
+    setState: (data: Setter<T>) => void;
+    subscribe: (observer: Observer) => () => void;
+    destroy: () => void;
 };
 
 export type { PersistProps, Setter, PersistObject, Observer };

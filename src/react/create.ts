@@ -10,6 +10,7 @@ import { useSelector } from "./selector";
 export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     let observable: IObservable;
     let store: IStore<T>;
+    let syncCleanup: (() => void) | undefined;
 
     const isPersisted =
         (initial as PersistObject<T>)?.[PERSIST_MARKER] === true;
@@ -19,7 +20,7 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         observable = persistedData.observable;
         store = persistedData.store;
         const { key, initialData } = initial as PersistObject<T>;
-        syncStoreData({ key, store, initialData });
+        syncCleanup = syncStoreData({ key, store, initialData });
     } else {
         observable = new Observable();
         store = new Store(initial as T, observable);
@@ -30,6 +31,18 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     const setState = isPersisted
         ? (initial as PersistObject<T>).setItem
         : store.set.bind(store);
+    let destroyed = false;
+
+    const destroy = () => {
+        if (destroyed) {
+            return;
+        }
+
+        destroyed = true;
+        syncCleanup?.();
+        syncCleanup = undefined;
+        observable.clear();
+    };
 
     const getServerSnapshot = () => {
         if (isPersisted)
@@ -58,6 +71,11 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
             };
         }
     } as UseStore<T>;
+
+    useStore.getState = getStoreSnapshot;
+    useStore.setState = setState;
+    useStore.subscribe = subscribeToStore;
+    useStore.destroy = destroy;
 
     return useStore;
 }
