@@ -37,7 +37,24 @@ export default defineConfig({
     })
   ],
   test: {
-    environment: "jsdom"
+    environment: "jsdom",
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/**/__tests__/**",
+        "src/**/*.test.{ts,tsx}",
+        "src/interfaces/**",
+        "src/types/**",
+      ],
+      thresholds: {
+        statements: 90,
+        branches: 85,
+        functions: 85,
+        lines: 90,
+      },
+    },
   },
   resolve: {
     alias: {
