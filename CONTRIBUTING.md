@@ -51,6 +51,16 @@ Use conventional commits:
 - `ci:` CI configuration
 - `build:` build configuration
 
+## Releasing
+
+1. Update `version` in `package.json`.
+2. Move the relevant entries in `CHANGELOG.md` from `Unreleased` to the new version.
+3. Commit the changes and create a matching tag, for example: `git tag v1.2.0`.
+4. Push the commit and tag: `git push origin main --tags`.
+5. The `Publish` workflow validates the package and publishes it with provenance using the `NPM_TOKEN` secret.
+
+The workflow fails if the tag does not match the `package.json` version.
+
 ## Pull requests
 
 1. Fork the repository and create a branch.

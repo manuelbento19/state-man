@@ -3,7 +3,11 @@
     "description": "A lightweight package for state management in React applications, designed as a simplified alternative to Zustand and the Context API.",
     "private": false,
     "version": "1.1.0",
+    "license": "MIT",
     "type": "module",
+    "engines": {
+        "node": ">=18"
+    },
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -19,7 +23,7 @@
     "sideEffects": false,
     "repository": {
         "type": "git",
-        "url": "https://github.com/manuelbento19/state-man.git"
+        "url": "git+https://github.com/manuelbento19/state-man.git"
     },
     "homepage": "https://www.stateman.cc/",
     "keywords": [
@@ -38,6 +42,7 @@
     },
     "scripts": {
         "build": "tsc --noEmit && vite build",
+        "prepublishOnly": "pnpm build",
         "typecheck": "tsc --noEmit",
         "test": "vitest",
         "coverage": "vitest run --coverage",

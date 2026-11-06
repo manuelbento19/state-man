@@ -10,6 +10,8 @@ All notable changes to this project are documented here.
 - SSR and hydration support for persisted stores.
 - Cross-tab synchronization cleanup and listener deduplication.
 - Vitest coverage configuration and GitHub Actions CI.
+- Automated npm publishing with provenance from GitHub Actions.
+- `prepublishOnly` build guard and Node.js engine requirement.
 
 ### Changed
 
