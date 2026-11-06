@@ -169,7 +169,7 @@ This approach ensures both persistence and synchronization, enabling a consisten
 🚀 **Performance** - Optimized selectors prevent unnecessary re-renders  
 🔄 **Persistence** - Built-in localStorage/sessionStorage support  
 🔀 **Cross-tab sync** - Automatic state synchronization across tabs  
-📱 **React 16.8+** - Compatible with modern React (Hooks required)  
+📱 **React 18+** - Uses `useSyncExternalStore` (React 18+ required)  
 🎯 **TypeScript** - Full type safety and IntelliSense support  
 ⚡ **Zero dependencies** - No external dependencies  
 🔧 **Simple API** - Minimal learning curve  
