@@ -134,6 +134,37 @@ const discountedTotal = useAppStore(state => {
 });
 ```
 
+### Imperative API
+
+`create` returns a hook with additional methods for use outside React:
+
+```tsx
+import { create } from "@bentoo/state-man";
+
+const useStore = create(0);
+
+useStore.getState(); // 0
+
+const unsubscribe = useStore.subscribe(() => {
+    console.log("state changed");
+});
+
+useStore.setState(1);
+useStore.setState((previous) => previous + 1); // 2
+
+unsubscribe();
+useStore.destroy(); // removes listeners and observers
+```
+
+- `useStore()` returns `{ state, setState }`.
+- `useStore(selector)` returns the selected value.
+- `getState()` reads the current state.
+- `setState(value | updater)` updates the state.
+- `subscribe(listener)` returns an unsubscribe function.
+- `destroy()` is idempotent, removes storage listeners and clears observers. It does not clear persisted storage.
+
+For persisted stores, `setState` writes to storage before updating memory. If the storage write fails, the state is not updated.
+
 ### Persisting Store Data
 
 You can persist a store's data across sessions by saving it to a storage medium such as `localStorage`, `sessionStorage`, or other available storage options. This ensures that the data is retained even when the page is reloaded or the browser is closed and reopened.
@@ -182,13 +213,13 @@ Custom `storage` adapters are ignored on the server; persistence is client-side 
 
 ## Features
 
-✨ **Lightweight** - ~1.3KB gzipped  
+✨ **Lightweight** - ~1.8KB gzipped  
 🚀 **Performance** - Optimized selectors prevent unnecessary re-renders  
 🔄 **Persistence** - Built-in localStorage/sessionStorage support  
 🔀 **Cross-tab sync** - Automatic state synchronization across tabs  
 📱 **React 18+** - Uses `useSyncExternalStore` (React 18+ required)  
 🎯 **TypeScript** - Full type safety and IntelliSense support  
-⚡ **Zero dependencies** - No external dependencies  
+⚡ **Zero runtime dependencies** - React is the only peer dependency  
 🔧 **Simple API** - Minimal learning curve  
 
 ## Why @bentoo/state-man?
@@ -200,13 +231,12 @@ Custom `storage` adapters are ignored on the server; persistence is client-side 
 - ✅ **Simpler setup** - No context providers or complex setup
 
 ### vs Zustand  
-- ✅ **Smaller bundle** - ~1.3KB vs ~2.7KB
+- ✅ **Smaller bundle** - ~1.8KB vs ~2.7KB
 - ✅ **Auto-memoization** - Built-in intelligent caching
-- ✅ **Backward compatible** - Existing code works unchanged
-- ✅ **Portuguese documentation** - Better local support
+- ✅ **Familiar API** - Minimal learning curve
 
 ### vs Redux Toolkit
-- ✅ **Much smaller** - ~1.3KB vs ~11KB+ 
+- ✅ **Much smaller** - ~1.8KB vs ~11KB+ 
 - ✅ **No boilerplate** - Direct state updates
 - ✅ **Simpler learning curve** - Intuitive API
 - ✅ **Built-in persistence** - No additional libraries needed
