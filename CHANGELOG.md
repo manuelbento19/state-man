@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-06
+
 ### Added
 
 - Imperative store API: `getState`, `setState`, `subscribe` and `destroy`.
