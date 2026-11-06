@@ -59,6 +59,24 @@ describe("Persisting store data", () => {
             expect.any(Error),
         );
     });
+    test("should fall back to initial data when stored JSON is invalid", () => {
+        const consoleWarn = vi
+            .spyOn(console, "warn")
+            .mockImplementation(() => {});
+        localStorage.setItem("invalid-json", "{invalid");
+
+        const persistedData = persist({
+            data: 7,
+            name: "invalid-json",
+        });
+
+        expect(persistedData.store.get()).toBe(7);
+        expect(localStorage.getItem("invalid-json")).toBe("7");
+        expect(consoleWarn).toHaveBeenCalledWith(
+            '[state-man] Failed to parse stored data for key "invalid-json". Using initial data.',
+            expect.any(Error),
+        );
+    });
     test("should create store with persisted data", () => {
         const persistedData = persist({
             data: 1,

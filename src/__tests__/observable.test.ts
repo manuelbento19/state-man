@@ -44,6 +44,33 @@ describe("Observable", () => {
         expect(callback).toHaveBeenCalledTimes(1);
         expect(consoleError).toHaveBeenCalled();
     });
+    test("should unsubscribe an observer", () => {
+        const localObservable = new Observable();
+        const callback = vi.fn();
+        const unsubscribe = localObservable.subscribe(callback);
+
+        localObservable.notify();
+        expect(callback).toHaveBeenCalledTimes(1);
+
+        unsubscribe();
+        localObservable.notify();
+
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+    test("should remove duplicate subscriptions when unsubscribing", () => {
+        const localObservable = new Observable();
+        const callback = vi.fn();
+        const unsubscribe = localObservable.subscribe(callback);
+        localObservable.subscribe(callback);
+
+        localObservable.notify();
+        expect(callback).toHaveBeenCalledTimes(2);
+
+        unsubscribe();
+        localObservable.notify();
+
+        expect(callback).toHaveBeenCalledTimes(2);
+    });
     test("should notify all observers when one unsubscribes during notify", () => {
         const localObservable = new Observable();
         const first = vi.fn();
