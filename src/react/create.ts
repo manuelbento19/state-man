@@ -1,45 +1,11 @@
 import { IObservable, IStore } from "@/interfaces";
-import { useSyncExternalStore } from "react";
-import { Observer, PersistObject, Setter, Selector, UseStore } from "@/types";
-import { Observable } from "./observable";
-import { PERSIST_MARKER } from "./persistMarker";
-import { syncStoreData } from "./sync";
+import { PersistObject, Selector, UseStore } from "@/types";
+import { Observable } from "@/core/observable";
+import { PERSIST_MARKER } from "@/core/persistMarker";
+import { Store } from "@/core/store";
+import { syncStoreData } from "@/core/sync";
+import { createExternalStore } from "./createExternalStore";
 import { useSelector } from "./selector";
-
-export class Store<T> implements IStore<T> {
-    constructor(private initialData: T, private observable: IObservable) {}
-
-    set(data: Setter<T>) {
-        const nextData =
-            typeof data === "function"
-                ? (data as (prev?: T) => T)(this.initialData)
-                : data;
-
-        if (Object.is(nextData, this.initialData)) {
-            return;
-        }
-
-        this.initialData = nextData;
-        this.observable.notify();
-    }
-
-    get() {
-        return this.initialData;
-    }
-}
-
-export const createExternalStore = <T>(
-    subscribe: (onStoreChange: Observer) => () => void,
-    snapshot: () => T,
-    serverSnapshot: () => T
-) => {
-    
-    if (typeof useSyncExternalStore === 'undefined' || useSyncExternalStore === null) {
-        throw new Error('useSyncExternalStore is not available. Please ensure you are using React 18 or higher.');
-    }
-    
-    return useSyncExternalStore(subscribe, snapshot, serverSnapshot);
-};
 
 export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
     let observable: IObservable;
@@ -66,12 +32,12 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         : store.set.bind(store);
 
     const getServerSnapshot = () => {
-        if(isPersisted)
-        return (initial as PersistObject<T>)?.initialData;
+        if (isPersisted)
+            return (initial as PersistObject<T>)?.initialData;
         return initial as T;
-    }
+    };
 
-    const useStore = function<U>(selector?: Selector<T, U>) {
+    const useStore = function <U>(selector?: Selector<T, U>) {
         if (selector) {
             return useSelector(
                 store,
@@ -79,8 +45,7 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
                 selector,
                 getServerSnapshot
             );
-        }
-        else {
+        } else {
             const state: T = createExternalStore(
                 subscribeToStore,
                 getStoreSnapshot,

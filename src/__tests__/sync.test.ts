@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { Observable } from "@/utils/observable";
-import { Store } from "@/utils/store";
-import { syncStoreData } from "@/utils/sync";
+import { Observable } from "@/core/observable";
+import { Store } from "@/core/store";
+import { syncStoreData } from "@/core/sync";
 
 describe("syncStoreData", () => {
     afterEach(() => {

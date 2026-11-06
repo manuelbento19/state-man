@@ -1,8 +1,8 @@
 import { useMemo, useRef } from "react";
 import { IObservable, IStore } from "@/interfaces";
 import { Observer, Selector } from "@/types";
-import { createExternalStore } from "./store";
-import { shallow } from "./shallow";
+import { shallow } from "@/core/shallow";
+import { createExternalStore } from "./createExternalStore";
 
 type SelectionCache<T, U> = {
     hasValue: boolean;

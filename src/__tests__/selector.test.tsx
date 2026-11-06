@@ -1,6 +1,6 @@
 import { cleanup, renderHook, act } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { create } from "@/utils/store";
+import { create } from "@/react/create";
 
 describe("Selector System", () => {
     afterEach(() => {
