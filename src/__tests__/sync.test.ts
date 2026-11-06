@@ -49,6 +49,45 @@ describe("syncStoreData", () => {
 
         expect(store.get()).toBe(0);
     });
+    test("should register a single listener per store", () => {
+        const addEventListener = vi.spyOn(window, "addEventListener");
+        const store = new Store(1, new Observable());
+        const props = { key: "sync-dedupe", store, initialData: 0 };
+
+        const cleanup = syncStoreData(props);
+
+        expect(syncStoreData(props)).toBe(cleanup);
+        expect(
+            addEventListener.mock.calls.filter(([type]) => type === "storage"),
+        ).toHaveLength(1);
+
+        cleanup();
+    });
+    test("should remove the storage listener on cleanup", () => {
+        const store = new Store(1, new Observable());
+        const cleanup = syncStoreData({
+            key: "sync-cleanup",
+            store,
+            initialData: 0,
+        });
+
+        window.dispatchEvent(
+            new StorageEvent("storage", {
+                key: "sync-cleanup",
+                newValue: JSON.stringify(5),
+            }),
+        );
+        expect(store.get()).toBe(5);
+
+        cleanup();
+        window.dispatchEvent(
+            new StorageEvent("storage", {
+                key: "sync-cleanup",
+                newValue: JSON.stringify(9),
+            }),
+        );
+        expect(store.get()).toBe(5);
+    });
     test("should ignore invalid JSON without throwing", () => {
         const store = new Store(1, new Observable());
         const consoleError = vi

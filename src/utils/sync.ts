@@ -29,8 +29,28 @@ const handleStorage = <T>(event: StorageEvent, props: SyncProps<T>) => {
     }
 }
 
-export function syncStoreData<T>(props: SyncProps<T>){
-    if(validation.isClientSide()){
-        window.addEventListener('storage',(event) => handleStorage(event, props));
+const syncCleanups = new WeakMap<object, () => void>();
+
+export function syncStoreData<T>(props: SyncProps<T>): () => void {
+    const existingCleanup = syncCleanups.get(props.store);
+
+    if (existingCleanup) {
+        return existingCleanup;
     }
+
+    if (!validation.isClientSide()) {
+        return () => {};
+    }
+
+    const listener = (event: StorageEvent) => handleStorage(event, props);
+    window.addEventListener('storage', listener);
+
+    const cleanup = () => {
+        window.removeEventListener('storage', listener);
+        syncCleanups.delete(props.store);
+    };
+
+    syncCleanups.set(props.store, cleanup);
+
+    return cleanup;
 }
