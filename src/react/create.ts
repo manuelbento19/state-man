@@ -44,11 +44,11 @@ export function create<T>(initial: T | PersistObject<T>): UseStore<T> {
         observable.clear();
     };
 
-    const getServerSnapshot = () => {
-        if (isPersisted)
-            return (initial as PersistObject<T>)?.initialData;
-        return initial as T;
-    };
+    const serverSnapshot = isPersisted
+        ? (initial as PersistObject<T>).initialData
+        : (initial as T);
+
+    const getServerSnapshot = () => serverSnapshot;
 
     const useStore = function <U>(selector?: Selector<T, U>) {
         if (selector) {

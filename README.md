@@ -163,6 +163,23 @@ This approach ensures both persistence and synchronization, enabling a consisten
 | `data`    | `any`     | Initial state value of the store. Can be any data type (number, string, object, array, etc.).                               |
 | `storage` | `Storage` | Type of storage used for persistence. By default, it uses `localStorage`. It can be: `localStorage`, `sessionStorage`, etc. |
 
+### SSR and Hydration
+
+On the server, browser storage is not available. SSR always renders the `data` passed to `persist`:
+
+```tsx
+const useUserStore = create(
+    persist({
+        name: "userStoreKey",
+        data: { name: "Guest" },
+    }),
+);
+```
+
+After the client hydrates, the persisted value is applied. Keep `data` deterministic between server and client to avoid hydration mismatches.
+
+Custom `storage` adapters are ignored on the server; persistence is client-side only. If the server already knows the persisted state (for example, from a cookie or database), pass that value as `data` so it is rendered during SSR.
+
 ## Features
 
 ✨ **Lightweight** - ~1.3KB gzipped  

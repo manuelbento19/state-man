@@ -24,7 +24,7 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
         storage = props.storage || window.localStorage;
     }
     else{
-        storage = props.storage || blankStorage;
+        storage = blankStorage;
     }
 
     let stored: string | null = null;
