@@ -39,6 +39,26 @@ describe("Persisting store data", () => {
 
         expect(persistedData[PERSIST_MARKER]).toBe(true);
     });
+    test("should fall back to initial data when reading storage fails", () => {
+        const consoleError = vi
+            .spyOn(console, "error")
+            .mockImplementation(() => {});
+        vi.spyOn(Storage.prototype, "getItem").mockImplementationOnce(() => {
+            throw new Error("Storage blocked");
+        });
+
+        const persistedData = persist({
+            data: 7,
+            name: "read-error",
+        });
+
+        expect(persistedData.store.get()).toBe(7);
+        expect(localStorage.getItem("read-error")).toBe("7");
+        expect(consoleError).toHaveBeenCalledWith(
+            '[state-man] Failed to read stored data for key "read-error". Using initial data.',
+            expect.any(Error),
+        );
+    });
     test("should create store with persisted data", () => {
         const persistedData = persist({
             data: 1,

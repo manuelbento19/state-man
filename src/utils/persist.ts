@@ -27,7 +27,16 @@ export function persist<T>(props: PersistProps<T>): PersistObject<T> {
         storage = props.storage || blankStorage;
     }
 
-    const stored = storage.getItem(props.name);
+    let stored: string | null = null;
+
+    try {
+        stored = storage.getItem(props.name);
+    } catch (error) {
+        console.error(
+            `[state-man] Failed to read stored data for key "${props.name}". Using initial data.`,
+            error
+        );
+    }
 
     if (stored) {
         try {
