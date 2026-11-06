@@ -243,7 +243,7 @@ Custom `storage` adapters are ignored on the server; persistence is client-side 
 
 ## Contribution
 
-If you would like to contribute, feel free to open a pull request or report an issue.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and guidelines. Release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
 1. Fork the project.
 2. Create your feature branch (`git checkout -b my-new-feature`).
